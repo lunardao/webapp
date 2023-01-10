@@ -11,8 +11,8 @@ export function Share() {
 	useEffect(() => {
 		const getShare = async () => {
 			try {
-				const provider = new ethers.providers.JsonRpcProvider('https://goerli.infura.io/v3/922ceefebd0d4cd29766ea22f19cba23');
-				const lunarLaunchPool = new ethers.Contract('0xbAFaAedFEeBB79fa942cFd5A9DbfB3446E6AEa6D', LunarLaunchPoolABI, provider);
+				const provider = new ethers.providers.JsonRpcProvider(`https://goerli.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_KEY}`);
+				const lunarLaunchPool = new ethers.Contract('0xdAFc5B2D1be6dF7fCd563FFe4EDa5992b3c191dA', LunarLaunchPoolABI, provider);
 
 				// userStakes
 				const getUserShare = await lunarLaunchPool.userShare(account);
@@ -35,12 +35,16 @@ export function Share() {
 				const lShare = weiToEther(lunarShareInDeceimal).toFixed(4);
 				const vShare = weiToEther(voxShareInDecimal).toFixed(4);
 
+				// to number
+				// const totalStakeinNumber = Number(totalS);
+				// const userStakesinNumber = Number(userS);
+
 				setLunarShare(lShare);
 				setVoxShare(vShare);
 			} catch (error) {}
 		};
 		getShare();
-		const interval = setInterval(getShare, 10000);
+		const interval = setInterval(getShare, 30000);
 
 		return () => clearInterval(interval);
 	}, [account]);

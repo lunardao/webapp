@@ -131,10 +131,10 @@ export default function Buy() {
 
 	const val = ethers.utils.parseEther(values.amount || '0');
 
-	// Join Function
+	// Buy Function
 	async function onBuy() {
 		const signer = provider.getSigner();
-		const lunarLaunchPool = new ethers.Contract('0xbAFaAedFEeBB79fa942cFd5A9DbfB3446E6AEa6D', LunarLaunchPoolABI, signer);
+		const lunarLaunchPool = new ethers.Contract('0xdAFc5B2D1be6dF7fCd563FFe4EDa5992b3c191dA', LunarLaunchPoolABI, signer);
 		try {
 			setPendingTx(true);
 			const tx = await lunarLaunchPool.enterLaunchPool({ value: val, gasLimit: 250000 });

@@ -3,11 +3,11 @@ import { Skeleton } from '@mui/material';
 import { useWeb3React } from '@web3-react/core';
 import Image from 'next/image';
 import { useState } from 'react';
-import Redeem from '../components/RedeemLunar';
+import Redeem from '../components/Redeem';
 import { Share } from '../components/Share';
 import { Stake } from '../components/Stake';
 import { Timer } from '../components/Timer';
-import Join from '../components/modal/BuyLunar';
+import Buy from '../components/modal/Buy';
 import Connect from '../components/modal/Connect';
 import lunarLogo from '../public/lunarLogo.png';
 
@@ -43,6 +43,7 @@ export default function IndexPage() {
 	const blocksUntilStart = endBlock - currentBlock;
 	const remainingDays = (blocksUntilStart * 12) / 86400;
 	const remainingHours = (blocksUntilStart * 12) / 3600;
+	const remainingMinutes = (blocksUntilStart * 12) / 60;
 
 	return (
 		<>
@@ -105,7 +106,7 @@ export default function IndexPage() {
 						<StyledSection style={{ margin: '0 auto 0 auto' }}>Ξ {userStakes}</StyledSection>
 					)}
 					<StyledSection style={{ margin: '2.5rem auto 2.5rem auto' }}>
-						<Join />
+						<Buy />
 					</StyledSection>
 
 					<StyledSection style={{ margin: '0 auto 0 auto' }}>Your current share</StyledSection>
@@ -148,9 +149,13 @@ export default function IndexPage() {
 						<StyledSection style={{ margin: '0 auto 0 auto' }}>$VOX {voxShare}</StyledSection>
 					)}
 					{blocksUntilStart > 0 ? (
-						<StyledSection style={{ margin: '2.5rem auto 0 auto' }}>
-							Redeem your share in ~ {remainingDays.toFixed(0)} Day(s) & {remainingHours.toFixed(0)} Hour(s)
-						</StyledSection>
+						remainingHours > 24 ? (
+							<StyledSection style={{ margin: '2.5rem auto 0 auto' }}>Redeem your share in ~ {remainingDays.toFixed(0)} Day(s)</StyledSection>
+						) : remainingHours > 1 ? (
+							<StyledSection style={{ margin: '2.5rem auto 0 auto' }}>Redeem your share in ~ {remainingHours.toFixed(0)} Hour(s)</StyledSection>
+						) : (
+							<StyledSection style={{ margin: '2.5rem auto 0 auto' }}>Redeem your share in ~ {remainingMinutes.toFixed(0)} Minute(s)</StyledSection>
+						)
 					) : (
 						<StyledSection style={{ margin: '2.5rem auto 0 auto' }}>
 							<Redeem />

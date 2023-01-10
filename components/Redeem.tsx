@@ -8,7 +8,7 @@ import { Fragment, useState } from 'react';
 import LunarLaunchPoolABI from '../abi/LunarLaunchPool.json';
 import { Timer } from './Timer';
 
-const RedeemButton = styled(Button)({
+const BuyButton = styled(Button)({
 	color: '#fff',
 	boxShadow: '0 0 5px #3B3B86',
 	textTransform: 'none',
@@ -30,16 +30,17 @@ const RedeemButton = styled(Button)({
 	},
 });
 
-export default function Redeem() {
+export default function FormDialog() {
 	const { provider } = useWeb3React();
 	const { enqueueSnackbar } = useSnackbar();
 	const [pendingTx, setPendingTx] = useState(false);
 	const [endBlock, currentBlock] = Timer();
+	const blocksUntilStart = endBlock - currentBlock;
 
-	// Join Function
-	async function onRedeem() {
+	// Redeem Function
+	async function onJoin() {
 		const signer = provider.getSigner();
-		const lunarLaunchPool = new ethers.Contract('0xbAFaAedFEeBB79fa942cFd5A9DbfB3446E6AEa6D', LunarLaunchPoolABI, signer);
+		const lunarLaunchPool = new ethers.Contract('0xdAFc5B2D1be6dF7fCd563FFe4EDa5992b3c191dA', LunarLaunchPoolABI, signer);
 		try {
 			setPendingTx(true);
 			const tx = await lunarLaunchPool.redeemToken({ gasLimit: 250000 });
@@ -63,15 +64,15 @@ export default function Redeem() {
 	return (
 		<div>
 			{pendingTx ? (
-				<RedeemButton startIcon={<CircularProgress thickness={2.5} size={25} />} disabled={true}>
+				<BuyButton startIcon={<CircularProgress thickness={2.5} size={25} />} disabled={true}>
 					Pending
-				</RedeemButton>
+				</BuyButton>
 			) : !endBlock && !currentBlock ? (
 				<Skeleton sx={{ height: 35, width: 100, bgcolor: 'grey.900' }} animation="wave" variant="rounded" />
 			) : (
-				<RedeemButton variant="outlined" onClick={onRedeem}>
+				<BuyButton variant="outlined" onClick={onJoin}>
 					REDEEM
-				</RedeemButton>
+				</BuyButton>
 			)}
 		</div>
 	);
